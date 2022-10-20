@@ -13,6 +13,7 @@ jobs:
     runs-on:  ubuntu-latest
     env:
       MODULE: smart_date
+      MODULES: datetime
       COMPOSER_MEMORY_LIMIT: -1
       # Note, the username, password, port and db match mysql service setup.
       SIMPLETEST_DB: mysql://root:root@127.0.0.1:3306/smart_date
@@ -64,7 +65,8 @@ jobs:
         run: |
           echo ${{ env.SIMPLETEST_DB }}
           $(pwd)/vendor/bin/drush site-install standard --yes --account-pass=admin --db-url=$SIMPLETEST_DB
-          $(pwd)/vendor/bin/drush en ${{env.MODULE}} --yes
+          $(pwd)/vendor/bin/drush en ${{env.MODULES}} --yes
+          $(pwd)/vendor/bin/drush en ${{env.MODULE}} smart_date_recur --yes
           $(pwd)/vendor/bin/drush config-set system.performance css.preprocess 0 --yes
           $(pwd)/vendor/bin/drush config-set system.performance js.preprocess 0 --yes
           $(pwd)/vendor/bin/drush config-set system.logging error_level all --yes
